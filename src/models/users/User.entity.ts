@@ -1,7 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn} from 'typeorm';
-import { PermissionEntity } from '../permissions/Permission.entity';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, BeforeInsert, BeforeUpdate} from 'typeorm';
 import { UserInterface } from './User.interface';
-
+import { hash } from 'bcryptjs';
 
 @Entity()
 export class UserEntity implements UserInterface{
@@ -12,15 +11,15 @@ export class UserEntity implements UserInterface{
     @Column()
     user:string;
 
-    @Column()
+    @Column({select: false})
     password:string;
+
+    @Column({type: 'text',array: true,default:[]})
+    roles: string[];
 
     /**
      * relaciones
      */
-    @OneToOne(() => PermissionEntity)
-    @JoinColumn()
-    permissions: PermissionEntity;
 
     @CreateDateColumn({
         name: 'created_at',
@@ -29,7 +28,13 @@ export class UserEntity implements UserInterface{
     })
     createdAt: Date;
     
-    @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-    updatedAt: Date;
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+        if (!this.password) {
+        return;
+        }
+        this.password = await hash(this.password, 10);
+    }
 
 }
