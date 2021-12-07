@@ -5,6 +5,7 @@ import { UserInterface } from 'src/models/users/User.interface';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { EditUserDto } from './dtos/edit-user.dto';
+import { UserFindOne } from './interfaces/userFindOne.interface';
 
 @Injectable()
 export class UsersService {
@@ -50,5 +51,18 @@ export class UsersService {
     public async deleteOne(id: number) {
         const user = await this.getUser(id);
         return await this.userRepository.remove(user);
+    }
+
+    public async findOne(data: UserFindOne) {
+        /**
+         * constructor de consultas sql con id user
+         * selecciona tb el password
+         * devuelveme uno
+         */
+        return await this.userRepository
+          .createQueryBuilder('user')
+          .where(data)
+          .addSelect('user.password')
+          .getOne();
     }
 }
