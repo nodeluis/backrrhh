@@ -1,8 +1,10 @@
 import { BadRequestException, Body, Controller, Get, HttpException, Param, Post, Put } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { EditUserDto } from './dtos/edit-user.dto';
 import { UsersService } from './users.service';
 
+@ApiTags('User routes')
 @Controller('users')
 export class UsersController {
 

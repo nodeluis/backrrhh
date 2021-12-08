@@ -13,6 +13,7 @@ async function bootstrap() {
     .setTitle('API de rrhh')
     .setDescription('API de recursos humanos')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('RRHH')
     .build();
   const document = SwaggerModule.createDocument(app, config);
