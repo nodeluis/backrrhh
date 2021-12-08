@@ -9,7 +9,7 @@ export enum AppRoles {
 //rutas
 export enum AppResource {
   USER = 'USER',
-  //POST = 'POST',
+  EMPLOYEE = 'EMPLOYEE',
 }
 
 export const roles: RolesBuilder = new RolesBuilder();
@@ -25,6 +25,8 @@ roles
   // ADMIN ROLES
   .grant(AppRoles.ADMIN)
   //.extend(AppRoles.AUTHOR)  con esto hereda todo lo q puede hacer el de arruba
-  .createAny([AppResource.USER]) //any quiere decir cualquier ruta segun la logica, solo el admin puede crear su propio articulo
-  .updateAny([AppResource.USER])
-  .deleteAny([AppResource.USER]);
+  //any quiere decir cualquier ruta segun la logica, solo el admin puede crear su propio articulo
+  .createAny([AppResource.USER,AppResource.EMPLOYEE])
+  .updateAny([AppResource.USER,AppResource.EMPLOYEE])
+  .deleteAny([AppResource.USER,AppResource.EMPLOYEE])
+  .readAny([AppResource.USER,AppResource.EMPLOYEE]);

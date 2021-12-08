@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AccessControlModule } from 'nest-access-control';
 import { AuthModule } from './auth/auth.module';
 import { roles } from './app.roles';
+import { EmployeeModule } from './employee/employee.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { roles } from './app.roles';
     AccessControlModule.forRoles(roles),
     AuthModule,
     UsersModule,
+    EmployeeModule,
   ],
   controllers: [],
   providers: [],

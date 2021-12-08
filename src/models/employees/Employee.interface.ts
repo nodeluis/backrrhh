@@ -2,8 +2,8 @@ export interface EmployeeInterface{
     id?:number;
     ci:string;
     civilStatus:string;
-    dateOfAdmission:string;
-    dateOfBirth:string;
+    dateOfAdmission:Date;
+    dateOfBirth:Date;
     employedName:string;
     enabled:boolean;
     gender:string;

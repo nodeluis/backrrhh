@@ -17,7 +17,7 @@ export class CreateUserDto {
   @IsArray()
   @IsEnum(AppRoles, {
     each: true,
-    message: `must be a valid role value, ${EnumToString(AppRoles)}`,
+    message: `Se necesita algun rol como, ${EnumToString(AppRoles)}`,
   })
   roles: string[];
 

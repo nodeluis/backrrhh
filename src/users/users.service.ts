@@ -54,7 +54,7 @@ export class UsersService {
         return await this.userRepository.remove(user);
     }
 
-    public async findOne(data: UserFindOne) {
+    public async findOne(data: UserFindOne): Promise<UserEntity>{
         /**
          * constructor de consultas sql con id user
          * selecciona tb el password

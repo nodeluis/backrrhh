@@ -14,11 +14,19 @@ export class EmployeeEntity implements EmployeeInterface{
     @Column()
     civilStatus:string;
 
-    @Column()
-    dateOfAdmission:string;
+    @Column({
+        type: 'timestamptz',
+        default:() => 'null',
+        nullable: true,
+    })
+    dateOfAdmission:Date;
 
-    @Column()
-    dateOfBirth:string;
+    @Column({
+        type: 'timestamptz',
+        default:() => 'null',
+        nullable: true,
+    })
+    dateOfBirth:Date;
 
     @Column()
     employedName:string;
@@ -44,7 +52,11 @@ export class EmployeeEntity implements EmployeeInterface{
     @Column()
     description:string;
 
-    @Column()
+    @Column({
+        type: String,
+        default:() => 'null',
+        nullable: true,
+    })
     photography:string;
 
     @Column()
