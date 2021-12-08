@@ -1,23 +1,16 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { initSwagger } from './app.swagger';
+import { setDefaultUser } from './config/default-user';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const config= app.get(ConfigService);
 
-  /*
-  *configuracion del swagger
-  */
-  const config = new DocumentBuilder()
-    .setTitle('API de rrhh')
-    .setDescription('API de recursos humanos')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .addTag('RRHH')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('rrhh', app, document);
+  initSwagger(app);
+  setDefaultUser(config);
   app.enableCors();
 
   /*

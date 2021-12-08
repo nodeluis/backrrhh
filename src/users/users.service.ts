@@ -17,8 +17,9 @@ export class UsersService {
         return await this.userRepository.find();
     }
     
-    public async getUser(id: number):Promise<UserEntity>{
-        const user = await this.userRepository.findOne(id);
+    public async getUser(id: number, userEnt?: UserEntity):Promise<UserEntity>{
+        const user = await this.userRepository.findOne(id)
+        .then(u => (!userEnt ? u : !!u && userEnt.id === u.id ? u : null));
     
         if (!user)throw new NotFoundException('no se encontro el usuario');
     
@@ -39,8 +40,8 @@ export class UsersService {
         return user;
     }
 
-    public async editUser(id: number, dto: EditUserDto):Promise<UserEntity> {
-        const user = await this.getUser(id);
+    public async editUser(id: number, dto: EditUserDto, userEnt?: UserEntity):Promise<UserEntity> {
+        const user = await this.getUser(id,userEnt);
         const editedUser = Object.assign(user, dto);
 
         const result=await this.userRepository.save(editedUser);
@@ -48,8 +49,8 @@ export class UsersService {
         return result;
     }
 
-    public async deleteOne(id: number) {
-        const user = await this.getUser(id);
+    public async deleteUser(id: number, userEnt?: UserEntity) {
+        const user = await this.getUser(id,userEnt);
         return await this.userRepository.remove(user);
     }
 

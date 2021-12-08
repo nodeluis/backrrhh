@@ -1,6 +1,10 @@
-import { BadRequestException, Body, Controller, Get, HttpException, Param, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpException, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { InjectRolesBuilder, RolesBuilder } from 'nest-access-control';
+import { AppResource } from 'src/app.roles';
 import { Auth } from 'src/common/decorators/auth.decorator';
+import { User } from 'src/common/decorators/user.decorator';
+import { UserEntity } from 'src/models/users/User.entity';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { EditUserDto } from './dtos/edit-user.dto';
 import { UsersService } from './users.service';
@@ -10,7 +14,9 @@ import { UsersService } from './users.service';
 export class UsersController {
 
     constructor(
-        private userService:UsersService
+        private userService:UsersService,
+        @InjectRolesBuilder()
+        private readonly rolesBuilder: RolesBuilder,
     ){}
 
     @Get()
@@ -33,7 +39,11 @@ export class UsersController {
         }
     }
 
-    @Auth()
+    @Auth({
+        possession: 'any',
+        action: 'create',
+        resource: AppResource.USER,
+    })
     @Post()
     async createUser(@Body() user: CreateUserDto){
         try {
@@ -44,18 +54,52 @@ export class UsersController {
         }
     }
 
-    @Auth()
+    @Auth({
+        possession: 'own',
+        action: 'update',
+        resource: AppResource.USER,
+    })
     @Put(':id')
-    async editOne(
+    async editUser(
         @Param('id') id: number,
         @Body() dto: EditUserDto,
+        //con esto rescatamos el usuario que esta haciendo la peticion de los headers
+        @User() user: UserEntity,
     ) {
-        try {
-            const data=await this.userService.editUser(id,dto);
+        try { 
+            let data;
+            if (this.rolesBuilder.can(user.roles).updateAny(AppResource.USER).granted) {
+                // esto es un admin
+                data = await this.userService.editUser(id, dto);
+            } else {
+                // esto es otro rol q solo pueda editar su usuario
+                const { roles, ...rest } = dto;
+                data = await this.userService.editUser(id, rest, user);
+            }
             return { message:'Usuario actualizado', data };
         } catch (error) {
             return error;
         }
+    }
+
+    @Auth({
+        action: 'delete',
+        //solo un admin puede eliminar este usuario
+        possession: 'own',
+        resource: AppResource.USER,
+    })
+    @Delete(':id')
+    async deleteOne(@Param('id') id: number, @User() user: UserEntity) {
+        let data;
+
+        if (this.rolesBuilder.can(user.roles).updateAny(AppResource.USER).granted) {
+            // esto es un admin puede eliminar cualquier usuario
+            data = await this.userService.deleteUser(id);
+        } else {
+            // esto es otro rol solo puede eliminar su usuario
+            data = await this.userService.deleteUser(id, user);
+        }
+        return { message: 'User deleted', data };
     }
 
 }
