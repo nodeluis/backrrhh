@@ -3,7 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_USERNAME } from './config/constants';
 import { UsersModule } from './users/users.module';
+import { AccessControlModule } from 'nest-access-control';
 import { AuthModule } from './auth/auth.module';
+import { roles } from './users/app.roles';
 
 @Module({
   imports: [
@@ -27,8 +29,9 @@ import { AuthModule } from './auth/auth.module';
       isGlobal:true,
       envFilePath:'.env'
     }),
-    UsersModule,
+    AccessControlModule.forRoles(roles),
     AuthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],

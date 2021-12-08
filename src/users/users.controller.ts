@@ -1,5 +1,6 @@
 import { BadRequestException, Body, Controller, Get, HttpException, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/common/decorators/auth.decorator';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { EditUserDto } from './dtos/edit-user.dto';
 import { UsersService } from './users.service';
@@ -32,6 +33,7 @@ export class UsersController {
         }
     }
 
+    @Auth()
     @Post()
     async createUser(@Body() user: CreateUserDto){
         try {
@@ -42,6 +44,7 @@ export class UsersController {
         }
     }
 
+    @Auth()
     @Put(':id')
     async editOne(
         @Param('id') id: number,
