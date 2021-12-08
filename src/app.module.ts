@@ -5,7 +5,7 @@ import { DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_PORT, DATABAS
 import { UsersModule } from './users/users.module';
 import { AccessControlModule } from 'nest-access-control';
 import { AuthModule } from './auth/auth.module';
-import { roles } from './users/app.roles';
+import { roles } from './app.roles';
 
 @Module({
   imports: [
