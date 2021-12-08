@@ -8,12 +8,9 @@ export const setDefaultUser = async (config: ConfigService) => {
     const userRepository = getRepository<UserEntity>(UserEntity);
 
     //columna usuario
-    const defaultUser = await userRepository
-        .createQueryBuilder()
-        .where('user = :user', {
-            user: config.get<string>(DEFAULT_USER_USER),
-        })
-        .getOne();
+    const defaultUser = await userRepository.findOne({
+        where:{user: config.get<string>(DEFAULT_USER_USER)}
+    });
 
     if (!defaultUser) {
         const adminUser = userRepository.create({
