@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmpty } from 'class-validator';
 import { PaginationQuery } from 'src/common/dtos/pagination.dto';
@@ -9,6 +9,8 @@ import { EmployeeInterface } from 'src/models/employees/Employee.interface';
 import { Between, Like, Repository } from 'typeorm';
 import { CreateEmployeeDto } from './dtos/create-employee.dto';
 import { saveFile, TypeSave } from 'src/common/saveImages/save';
+import { EditEmployeeDto } from './dtos/edit-employee.dto';
+import { StateEmployeeDto } from './dtos/state-employee.dto';
 
 @Injectable()
 export class EmployeeService {
@@ -73,6 +75,15 @@ export class EmployeeService {
         }
     }
 
+    public async getEmployee(id: number):Promise<EmployeeEntity>{
+
+        const empEnt = await this.employeeRepository.findOne(id);
+    
+        if (!empEnt)throw new NotFoundException('no se encontro el empleado');
+    
+        return empEnt;
+    }
+
     public async createEmployee(dto: CreateEmployeeDto):Promise<EmployeeEntity>{
 
         const employeeExist: EmployeeEntity = await this.employeeRepository.findOne({ ci:dto.ci });
@@ -87,5 +98,31 @@ export class EmployeeService {
         return await this.employeeRepository.save(newEmployee);
     }
 
+    public async editEmployee(id: number, dto: EditEmployeeDto):Promise<EmployeeEntity> {
+        const empEnt = await this.getEmployee(id);
+
+        if(!empEnt)throw new NotFoundException('no se encontro el empleado');
+        
+        if(dto.photography){
+            dto.photography=saveFile(dto.photography,TypeSave.EDIT_PROFILE,empEnt.photography);
+        }
+
+        const editedEmp = Object.assign(empEnt, dto);
+
+        const result=await this.employeeRepository.save(editedEmp);
+        return result;
+    }
+
+    public async stateEmployee(id: number, dto: StateEmployeeDto):Promise<EmployeeEntity> {
+        const empEnt = await this.getEmployee(id);
+
+        if(!empEnt)throw new NotFoundException('no se encontro el empleado');
+        
+        const editedEmp = Object.assign(empEnt, dto);
+
+        const result=await this.employeeRepository.save(editedEmp);
+        
+        return result;
+    }
 
 }

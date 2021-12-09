@@ -7,6 +7,8 @@ import { AccessControlModule } from 'nest-access-control';
 import { AuthModule } from './auth/auth.module';
 import { roles } from './app.roles';
 import { EmployeeModule } from './employee/employee.module';
+import { EdificeModule } from './edifice/edifice.module';
+import { PcauthModule } from './pcauth/pcauth.module';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import { EmployeeModule } from './employee/employee.module';
         username: config.get<string>(DATABASE_USERNAME),
         password: config.get<string>(DATABASE_PASSWORD),
         database: config.get<string>(DATABASE_NAME),
-        entities: [__dirname + './**/**/*entity{.ts,.js}'],
+        entities: ['dist/**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: false,
         logging: true,
@@ -34,6 +36,8 @@ import { EmployeeModule } from './employee/employee.module';
     AuthModule,
     UsersModule,
     EmployeeModule,
+    EdificeModule,
+    PcauthModule,
   ],
   controllers: [],
   providers: [],

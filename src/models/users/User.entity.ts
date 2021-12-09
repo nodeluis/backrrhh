@@ -1,6 +1,7 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, BeforeInsert, BeforeUpdate} from 'typeorm';
 import { UserInterface } from './User.interface';
 import { hash } from 'bcryptjs';
+import { EmployeeEntity } from '../employees/Employee.entity';
 
 @Entity()
 export class UserEntity implements UserInterface{
@@ -21,6 +22,10 @@ export class UserEntity implements UserInterface{
      * relaciones
      */
 
+    @OneToOne(() => EmployeeEntity)
+    @JoinColumn()
+    employee: EmployeeEntity;
+
     @CreateDateColumn({
         name: 'created_at',
         type: 'timestamptz',
@@ -32,7 +37,7 @@ export class UserEntity implements UserInterface{
     @BeforeUpdate()
     async hashPassword() {
         if (!this.password) {
-        return;
+            return;
         }
         this.password = await hash(this.password, 10);
     }

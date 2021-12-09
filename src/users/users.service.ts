@@ -1,5 +1,6 @@
 import { BadRequestException, HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EmployeeEntity } from 'src/models/employees/Employee.entity';
 import { UserEntity } from 'src/models/users/User.entity';
 import { UserInterface } from 'src/models/users/User.interface';
 import { Repository } from 'typeorm';
@@ -11,6 +12,7 @@ import { UserFindOne } from './interfaces/userFindOne.interface';
 export class UsersService {
     constructor(
         @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,
+        @InjectRepository(EmployeeEntity) private employeeRepository: Repository<EmployeeEntity>,
     ){}
 
     public async getAllUsers():Promise<UserInterface[]> {
@@ -32,8 +34,17 @@ export class UsersService {
 
         if(userExist)throw new BadRequestException('El usuario ya existe');
 
-        const newUser: UserEntity = this.userRepository.create(data);
+        const empEnt=await this.employeeRepository.findOne({ where:{id:data.employeeId} });
         
+        if(!empEnt)throw new BadRequestException('El empleado a asignar este usuario no existe');
+
+        const newUser=new UserEntity();
+        
+        newUser.employee=empEnt;
+        newUser.user=data.user;
+        newUser.password=data.password;
+        newUser.roles=data.roles;
+
         const user = await this.userRepository.save(newUser);
 
         delete user.password;

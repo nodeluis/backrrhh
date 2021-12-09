@@ -70,10 +70,11 @@ export class UsersController {
             let data;
             if (this.rolesBuilder.can(user.roles).updateAny(AppResource.USER).granted) {
                 // esto es un admin
-                data = await this.userService.editUser(id, dto);
+                const { employeeId , ...rest } = dto;
+                data = await this.userService.editUser(id, rest);
             } else {
                 // esto es otro rol q solo pueda editar su usuario
-                const { roles, ...rest } = dto;
+                const { roles, employeeId , ...rest } = dto;
                 data = await this.userService.editUser(id, rest, user);
             }
             return { message:'Usuario actualizado', data };

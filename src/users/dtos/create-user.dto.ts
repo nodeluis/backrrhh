@@ -14,6 +14,10 @@ export class CreateUserDto {
   password: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  employeeId: number;
+
+  @ApiProperty()
   @IsArray()
   @IsEnum(AppRoles, {
     each: true,

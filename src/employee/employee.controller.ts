@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, Post, Query, Response, StreamableFile} from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Param, Post, Put, Query, Response, StreamableFile} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectRolesBuilder, RolesBuilder } from 'nest-access-control';
 import { AppResource } from 'src/app.roles';
@@ -8,6 +8,8 @@ import { CreateEmployeeDto } from './dtos/create-employee.dto';
 import { EmployeeService } from './employee.service';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { EditEmployeeDto } from './dtos/edit-employee.dto';
+import { StateEmployeeDto } from './dtos/state-employee.dto';
 
 @ApiTags('Employee routes')
 @Controller('employee')
@@ -35,6 +37,21 @@ export class EmployeeController {
 
     @Auth({
         possession: 'own',
+        action: 'read',
+        resource: AppResource.EMPLOYEE,
+    })
+    @Get(':id')
+    async findEmployee(@Param('id') id: number) {
+        try {
+            const data = await this.employeeService.getEmployee(id);
+            return { data };
+        } catch (error) {
+            return error;
+        }
+    }
+
+    @Auth({
+        possession: 'own',
         action: 'create',
         resource: AppResource.EMPLOYEE,
     })
@@ -43,6 +60,43 @@ export class EmployeeController {
         try {
             const data=await this.employeeService.createEmployee(dto);
             return { message:'Empleado creado', data };
+        } catch (error) {
+            return error;
+        }
+    }
+
+
+    @Auth({
+        possession: 'own',
+        action: 'update',
+        resource: AppResource.EMPLOYEE,
+    })
+    @Put(':id')
+    async editEmployee(
+        @Param('id') id: number,
+        @Body() dto: EditEmployeeDto,
+    ) {
+        try { 
+            const data = await this.employeeService.editEmployee(id, dto);
+            return { message:'Empleado actualizado', data };
+        } catch (error) {
+            return error;
+        }
+    }
+
+    @Auth({
+        possession: 'own',
+        action: 'update',
+        resource: AppResource.EMPLOYEE,
+    })
+    @Put('state/:id')
+    async stateEmployee(
+        @Param('id') id: number,
+        @Body() dto: StateEmployeeDto,
+    ) {
+        try { 
+            const data = await this.employeeService.stateEmployee(id, dto);
+            return { message:'Empleado actualizado', data };
         } catch (error) {
             return error;
         }
@@ -60,7 +114,7 @@ export class EmployeeController {
             const file = createReadStream(join(data));
             res.set({
                 'Content-Type': 'image/png',
-                'Content-Disposition': 'attachment; filename="img.png"',
+                'Content-Disposition': 'attachment; filename="image_profile.png"',
             });
             return new StreamableFile(file);
         } catch (error) {
