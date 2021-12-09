@@ -8,7 +8,7 @@ import { EmployeeEntity } from 'src/models/employees/Employee.entity';
 import { EmployeeInterface } from 'src/models/employees/Employee.interface';
 import { Between, Like, Repository } from 'typeorm';
 import { CreateEmployeeDto } from './dtos/create-employee.dto';
-import * as fs from 'fs';
+import { saveFile, TypeSave } from 'src/common/saveImages/save';
 
 @Injectable()
 export class EmployeeService {
@@ -75,19 +75,17 @@ export class EmployeeService {
 
     public async createEmployee(dto: CreateEmployeeDto):Promise<EmployeeEntity>{
 
-        const file=await fetch(dto.photography)
-                        .then(res => res.blob())
-                        ;
-        console.log(file);
-        const arr=await file.arrayBuffer();
-
         const employeeExist: EmployeeEntity = await this.employeeRepository.findOne({ ci:dto.ci });
+        if(employeeExist)throw new BadRequestException('El empleado ya existe');
 
-        /*if(employeeExist)throw new BadRequestException('El empleado ya existe');
+        if(dto.photography){
+            dto.photography=saveFile(dto.photography,TypeSave.PROFILE);
+        }
 
-        const newEmployee: EmployeeEntity = this.employeeRepository.create(dto);*/
+        const newEmployee: EmployeeEntity = this.employeeRepository.create(dto);
 
-        return /*await this.employeeRepository.save(newEmployee)*/employeeExist;
+        return await this.employeeRepository.save(newEmployee);
     }
+
 
 }
