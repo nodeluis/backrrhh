@@ -9,7 +9,6 @@ import { PcAuthEntity } from 'src/models/pcauth/pcauth.entity';
 import { PcAuthInterface } from 'src/models/pcauth/pcauth.interface';
 import { Between, Like, Repository } from 'typeorm';
 import { CreatePcAuthDto } from './dtos/create-pc-auth.dto';
-import { StatePcAuthDto } from './dtos/state-pc-auth.dto';
 import { EditPcAuthDto } from './dtos/update-pc-auth.dto';
 
 @Injectable()
@@ -98,16 +97,6 @@ export class PcauthService {
         
         const pcEnt: PcAuthEntity = await this.getPcAuth(id);
 
-        const editedPc: PcAuthEntity = Object.assign(pcEnt, dto);
-
-        const result=await this.pcAuthRepository.save(editedPc);
-        
-        return result;
-    }
-
-    public async statePcAuth(id: number, dto: StatePcAuthDto):Promise<PcAuthEntity> {
-        const pcEnt: PcAuthEntity = await this.getPcAuth(id);
-        
         const editedPc: PcAuthEntity = Object.assign(pcEnt, dto);
 
         const result=await this.pcAuthRepository.save(editedPc);

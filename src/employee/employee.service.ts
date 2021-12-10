@@ -10,7 +10,6 @@ import { Between, Like, Repository } from 'typeorm';
 import { CreateEmployeeDto } from './dtos/create-employee.dto';
 import { saveFile, TypeSave } from 'src/common/saveImages/save';
 import { EditEmployeeDto } from './dtos/edit-employee.dto';
-import { StateEmployeeDto } from './dtos/state-employee.dto';
 
 @Injectable()
 export class EmployeeService {
@@ -110,18 +109,6 @@ export class EmployeeService {
         const editedEmp = Object.assign(empEnt, dto);
 
         const result=await this.employeeRepository.save(editedEmp);
-        return result;
-    }
-
-    public async stateEmployee(id: number, dto: StateEmployeeDto):Promise<EmployeeEntity> {
-        const empEnt = await this.getEmployee(id);
-
-        if(!empEnt)throw new NotFoundException('no se encontro el empleado');
-        
-        const editedEmp = Object.assign(empEnt, dto);
-
-        const result=await this.employeeRepository.save(editedEmp);
-        
         return result;
     }
 

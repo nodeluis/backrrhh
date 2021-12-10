@@ -9,7 +9,6 @@ import { EmployeeService } from './employee.service';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import { EditEmployeeDto } from './dtos/edit-employee.dto';
-import { StateEmployeeDto } from './dtos/state-employee.dto';
 
 @ApiTags('Employee routes')
 @Controller('employee')
@@ -83,24 +82,7 @@ export class EmployeeController {
             return error;
         }
     }
-
-    @Auth({
-        possession: 'own',
-        action: 'update',
-        resource: AppResource.EMPLOYEE,
-    })
-    @Put('state/:id')
-    async stateEmployee(
-        @Param('id') id: number,
-        @Body() dto: StateEmployeeDto,
-    ) {
-        try { 
-            const data = await this.employeeService.stateEmployee(id, dto);
-            return { message:'Empleado actualizado', data };
-        } catch (error) {
-            return error;
-        }
-    }
+    
 
     @Auth({
         possession: 'own',

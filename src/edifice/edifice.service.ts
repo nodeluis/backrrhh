@@ -8,7 +8,6 @@ import { EdificeInterface } from 'src/models/edifice/Edifice.interface';
 import { Between, Like, Repository } from 'typeorm';
 import { CreateEdificeDto } from './dtos/create-edifice.sto';
 import { EditEdificeDto } from './dtos/edit-edifice.dto';
-import { StateEdificeDto } from './dtos/state-edifice.dto';
 import { isEmpty } from 'class-validator';
 
 @Injectable()
@@ -81,18 +80,6 @@ export class EdificeService {
         const editedEd = Object.assign(edEnt, dto);
 
         const result=await this.edificeRepository.save(editedEd);
-        return result;
-    }
-
-    public async stateEdifice(id: number, dto: StateEdificeDto):Promise<EdificeEntity> {
-        const edEnt = await this.getEdifice(id);
-
-        if(!edEnt)throw new NotFoundException('no se encontro el edificio');
-        
-        const editedEd = Object.assign(edEnt, dto);
-
-        const result=await this.edificeRepository.save(editedEd);
-        
         return result;
     }
 }

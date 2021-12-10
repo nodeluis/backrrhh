@@ -6,7 +6,6 @@ import { Auth } from 'src/common/decorators/auth.decorator';
 import { PaginationQuery } from 'src/common/dtos/pagination.dto';
 import { CreateEdificeDto } from './dtos/create-edifice.sto';
 import { EditEdificeDto } from './dtos/edit-edifice.dto';
-import { StateEdificeDto } from './dtos/state-edifice.dto';
 import { EdificeService } from './edifice.service';
 
 @ApiTags('Edifice routes')
@@ -82,22 +81,5 @@ export class EdificeController {
         }
     }
 
-    @Auth({
-        possession: 'own',
-        action: 'update',
-        resource: AppResource.EDIFICE,
-    })
-    @Put('state/:id')
-    async stateEmployee(
-        @Param('id') id: number,
-        @Body() dto: StateEdificeDto,
-    ) {
-        try { 
-            const data = await this.edificeServvice.stateEdifice(id, dto);
-            return { message:'Edificio actualizado', data };
-        } catch (error) {
-            return error;
-        }
-    }
 
 }

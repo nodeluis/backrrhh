@@ -1,26 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateEdificeDto {
+export class CreateFingerPrintDto {
 
     @ApiProperty()
     @IsNotEmpty()
-    name:string;
+    employeeId:number;
 
     @ApiProperty()
     @IsNotEmpty()
-    direction:string;
+    thumb:string;
 
     @ApiProperty()
     @IsNotEmpty()
-    lat:string;
+    index:string;
 
     @ApiProperty()
     @IsNotEmpty()
-    lgn:string;
+    middle:string;
 
     @ApiProperty()
     @IsNotEmpty()
-    online:boolean;
+    ring:string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    little:string;
 
 }

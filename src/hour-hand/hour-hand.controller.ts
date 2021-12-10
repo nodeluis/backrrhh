@@ -1,31 +1,28 @@
 import { Body, Controller, Get, HttpException, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InjectRolesBuilder, RolesBuilder } from 'nest-access-control';
 import { AppResource } from 'src/app.roles';
 import { Auth } from 'src/common/decorators/auth.decorator';
 import { PaginationQuery } from 'src/common/dtos/pagination.dto';
-import { CreatePcAuthDto } from './dtos/create-pc-auth.dto';
-import { EditPcAuthDto } from './dtos/update-pc-auth.dto';
-import { PcauthService } from './pcauth.service';
+import { CreateHourHandDto } from './dtos/create-hour-hand.dto';
+import { EditHourHandDto } from './dtos/edit-hour-hand.dto';
+import { HourHandService } from './hour-hand.service';
 
-@ApiTags('Pc Auth routes')
-@Controller('pcauth')
-export class PcauthController {
+@ApiTags('Hour Hand routes')
+@Controller('hour-hand')
+export class HourHandController {
     constructor(
-        private pcService:PcauthService,
-        @InjectRolesBuilder()
-        private readonly rolesBuilder: RolesBuilder,
+        private hourHandService:HourHandService,
     ){}
 
     @Auth({
         possession: 'own',
         action: 'read',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.HOUR_HAND,
     })
     @Get()
-    async findPcAuths(@Query() paginationQuery: PaginationQuery) {
+    async findHourHands(@Query() paginationQuery: PaginationQuery) {
         try { 
-            const data=await this.pcService.getPcAuths(paginationQuery);
+            const data=await this.hourHandService.getHourHands(paginationQuery);
             return { data }
         } catch (error) {
             return new HttpException(error, 409);
@@ -35,12 +32,12 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'read',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.HOUR_HAND,
     })
     @Get(':id')
-    async findPcAuth(@Param('id') id: number) {
+    async findHourHand(@Param('id') id: number) {
         try {
-            const data = await this.pcService.getPcAuth(id);
+            const data = await this.hourHandService.getHourHand(id);
             return { data };
         } catch (error) {
             return error;
@@ -50,13 +47,13 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'create',
-        resource: AppResource.EDIFICE,
+        resource: AppResource.HOUR_HAND,
     })
     @Post()
-    async createPcAuth(@Body() dto: CreatePcAuthDto){
+    async createHourHand(@Body() dto: CreateHourHandDto){
         try {
-            const data=await this.pcService.createPcAuth(dto);
-            return { message:'Pc autorizada creada', data };
+            const data=await this.hourHandService.createHourHand(dto);
+            return { message:'Horario creado', data };
         } catch (error) {
             return error;
         }
@@ -69,13 +66,13 @@ export class PcauthController {
         resource: AppResource.EDIFICE,
     })
     @Put(':id')
-    async editPcAuth(
+    async editHourHand(
         @Param('id') id: number,
-        @Body() dto: EditPcAuthDto,
+        @Body() dto: EditHourHandDto,
     ) {
         try { 
-            const data = await this.pcService.editPcAuth(id, dto);
-            return { message:'Pc actualizada', data };
+            const data = await this.hourHandService.editHourHande(id, dto);
+            return { message:'Horario actualizado', data };
         } catch (error) {
             return error;
         }

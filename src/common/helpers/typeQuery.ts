@@ -1,3 +1,4 @@
+import { isEmpty } from "class-validator";
 import { PaginationQuery } from "../dtos/pagination.dto"
 import { TypeQueryInterface } from "../interface/type-query.interface";
 
@@ -31,7 +32,8 @@ export const TypeQuery=({search,range1,range2}:PaginationQuery): TypeQueryInterf
             date2:new Date(range2),
         };
         return data;
-    }else{
+    }
+    else{
         const data:TypeQueryInterface={
             type:TypeCasePagination.NONE,
         };

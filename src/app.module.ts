@@ -9,6 +9,10 @@ import { roles } from './app.roles';
 import { EmployeeModule } from './employee/employee.module';
 import { EdificeModule } from './edifice/edifice.module';
 import { PcauthModule } from './pcauth/pcauth.module';
+import { FingerPrintModule } from './finger-print/finger-print.module';
+import { HourModule } from './hour/hour.module';
+import { HourHandModule } from './hour-hand/hour-hand.module';
+import { ReasonModule } from './reason/reason.module';
 
 @Module({
   imports: [
@@ -38,6 +42,10 @@ import { PcauthModule } from './pcauth/pcauth.module';
     EmployeeModule,
     EdificeModule,
     PcauthModule,
+    FingerPrintModule,
+    HourModule,
+    HourHandModule,
+    ReasonModule,
   ],
   controllers: [],
   providers: [],
