@@ -2,7 +2,7 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ManyToMany, JoinTable} from 'typeorm';
 import { EmployeeEntity } from '../employees/Employee.entity';
 import { HourEntity } from '../hour/Hour.entity';
-import { RegularizationEntity } from '../regularization/Regularization.enity';
+import { RegularizationEntity } from '../regularization/Regularization.entity';
 import { TickeoInterface } from './Tickeo.interface';
 
 @Entity()

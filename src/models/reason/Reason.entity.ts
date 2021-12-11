@@ -1,5 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne} from 'typeorm';
-import { RegularizationEntity } from '../regularization/Regularization.enity';
+import { RegularizationEntity } from '../regularization/Regularization.entity';
 import { ReasonInterface } from './Reason.interface';
 
 @Entity()

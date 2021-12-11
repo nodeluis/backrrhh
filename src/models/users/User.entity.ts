@@ -2,7 +2,7 @@ import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColu
 import { UserInterface } from './User.interface';
 import { hash } from 'bcryptjs';
 import { EmployeeEntity } from '../employees/Employee.entity';
-import { RegularizationEntity } from '../regularization/Regularization.enity';
+import { RegularizationEntity } from '../regularization/Regularization.entity';
 
 @Entity()
 export class UserEntity implements UserInterface{
