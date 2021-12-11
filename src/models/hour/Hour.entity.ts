@@ -1,5 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToOne, JoinColumn, ManyToOne} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToOne, JoinColumn, ManyToOne, OneToMany} from 'typeorm';
 import { HourHandEntity } from '../hour-hand/HourHand.entity';
+import { TickeoEntity } from '../tickeo/Tickeo.entity';
 import { HourInterface } from './Hour.interface';
 
 @Entity()
@@ -52,6 +53,9 @@ export class HourEntity implements HourInterface{
 
     @ManyToOne(() => HourHandEntity, hhand => hhand.hour)
     hourHand: HourHandEntity;
+
+    @OneToMany(() => TickeoEntity, tick => tick.hour)
+    tickeo: TickeoEntity[];
 
     @CreateDateColumn({
         name: 'created_at',

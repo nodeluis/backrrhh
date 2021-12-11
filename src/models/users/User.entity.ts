@@ -1,7 +1,8 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, BeforeInsert, BeforeUpdate} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, BeforeInsert, BeforeUpdate, OneToMany} from 'typeorm';
 import { UserInterface } from './User.interface';
 import { hash } from 'bcryptjs';
 import { EmployeeEntity } from '../employees/Employee.entity';
+import { RegularizationEntity } from '../regularization/Regularization.enity';
 
 @Entity()
 export class UserEntity implements UserInterface{
@@ -25,6 +26,9 @@ export class UserEntity implements UserInterface{
     @OneToOne(() => EmployeeEntity)
     @JoinColumn()
     employee: EmployeeEntity;
+
+    @OneToMany(() => RegularizationEntity, reg => reg.user)
+    regularization: RegularizationEntity[];
 
     @CreateDateColumn({
         name: 'created_at',

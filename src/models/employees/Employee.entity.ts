@@ -1,4 +1,5 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany} from 'typeorm';
+import { TickeoEntity } from '../tickeo/Tickeo.entity';
 import { EmployeeInterface } from './Employee.interface';
 
 
@@ -64,6 +65,9 @@ export class EmployeeEntity implements EmployeeInterface{
 
     @Column()
     qr:string;
+
+    @OneToMany(() => TickeoEntity, tick => tick.employee)
+    tickeo: TickeoEntity[];
 
     @CreateDateColumn({
         name: 'created_at',

@@ -13,6 +13,8 @@ import { FingerPrintModule } from './finger-print/finger-print.module';
 import { HourModule } from './hour/hour.module';
 import { HourHandModule } from './hour-hand/hour-hand.module';
 import { ReasonModule } from './reason/reason.module';
+import { TickeoModule } from './tickeo/tickeo.module';
+import { RegularizationModule } from './regularization/regularization.module';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { ReasonModule } from './reason/reason.module';
     HourModule,
     HourHandModule,
     ReasonModule,
+    TickeoModule,
+    RegularizationModule,
   ],
   controllers: [],
   providers: [],
