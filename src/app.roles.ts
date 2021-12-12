@@ -15,7 +15,8 @@ export enum AppResource {
   FINGER= 'FINGER',
   HOUR_HAND= 'HOUR_HAND',
   HOUR= 'HOUR',
-  REASON= 'REASON'
+  REASON= 'REASON',
+  TICKEO= 'TICKEO'
 }
 
 export const roles: RolesBuilder = new RolesBuilder();
@@ -32,7 +33,7 @@ roles
   .grant(AppRoles.ADMIN)
   //.extend(AppRoles.AUTHOR)  con esto hereda todo lo q puede hacer el de arruba
   //any quiere decir cualquier ruta segun la logica, solo el admin puede crear su propio articulo
-  .createAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON])
-  .updateAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON])
-  .deleteAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON])
-  .readAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON]);
+  .createAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO])
+  .updateAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO])
+  .deleteAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO])
+  .readAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO]);

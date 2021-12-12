@@ -1,7 +1,8 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, OneToMany} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, OneToMany, ManyToMany, JoinTable} from 'typeorm';
 import { RegularizationInterface } from './Regularization.interface';
 import { UserEntity } from '../users/User.entity';
 import { ReasonEntity } from '../reason/Reason.entity';
+import { TickeoEntity } from '../tickeo/Tickeo.entity';
 
 @Entity()
 export class RegularizationEntity implements RegularizationInterface{
@@ -20,6 +21,10 @@ export class RegularizationEntity implements RegularizationInterface{
 
     @OneToMany(() => ReasonEntity, reason => reason.regularization)
     reason: ReasonEntity[];
+
+    @ManyToMany(() => TickeoEntity)
+    @JoinTable()
+    tickeo: TickeoEntity[];
 
     @CreateDateColumn({
         name: 'created_at',
