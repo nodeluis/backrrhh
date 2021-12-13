@@ -1,6 +1,5 @@
 import { Body, Controller, Get, HttpException, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InjectRolesBuilder, RolesBuilder } from 'nest-access-control';
 import { AppResource } from 'src/app.roles';
 import { Auth } from 'src/common/decorators/auth.decorator';
 import { PaginationQuery } from 'src/common/dtos/pagination.dto';
@@ -12,9 +11,7 @@ import { EdificeService } from './edifice.service';
 @Controller('edifice')
 export class EdificeController {
     constructor(
-        private edificeServvice:EdificeService,
-        @InjectRolesBuilder()
-        private readonly rolesBuilder: RolesBuilder,
+        private edificeService:EdificeService,
     ){}
 
     @Auth({
@@ -25,7 +22,7 @@ export class EdificeController {
     @Get()
     async findEdificies(@Query() paginationQuery: PaginationQuery) {
         try { 
-            const data=await this.edificeServvice.getEdificies(paginationQuery);
+            const data=await this.edificeService.getEdificies(paginationQuery);
             return { data }
         } catch (error) {
             return new HttpException(error, 409);
@@ -40,7 +37,7 @@ export class EdificeController {
     @Get(':id')
     async findEmployee(@Param('id') id: number) {
         try {
-            const data = await this.edificeServvice.getEdifice(id);
+            const data = await this.edificeService.getEdifice(id);
             return { data };
         } catch (error) {
             return error;
@@ -55,7 +52,7 @@ export class EdificeController {
     @Post()
     async createEmployee(@Body() dto: CreateEdificeDto){
         try {
-            const data=await this.edificeServvice.createEdifice(dto);
+            const data=await this.edificeService.createEdifice(dto);
             return { message:'Edificio creado', data };
         } catch (error) {
             return error;
@@ -74,7 +71,7 @@ export class EdificeController {
         @Body() dto: EditEdificeDto,
     ) {
         try { 
-            const data = await this.edificeServvice.editEdifice(id, dto);
+            const data = await this.edificeService.editEdifice(id, dto);
             return { message:'Edificio actualizado', data };
         } catch (error) {
             return error;

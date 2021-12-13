@@ -1,6 +1,7 @@
 import { PcAuthEntity } from '../pcauth/pcauth.entity';
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToMany, JoinTable} from 'typeorm';
 import { EdificeInterface } from './Edifice.interface';
+import { ContractEntity } from '../contract/Contract.entity';
 
 @Entity()
 export class EdificeEntity implements EdificeInterface{
@@ -28,6 +29,9 @@ export class EdificeEntity implements EdificeInterface{
 
     @OneToMany(() => PcAuthEntity, pc => pc.edifice)
     pcauth: PcAuthEntity[];
+
+    @OneToMany(() => ContractEntity, c => c.edifice)
+    contracts: ContractEntity[];
 
     @CreateDateColumn({
         name: 'created_at',

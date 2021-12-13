@@ -1,17 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class CreatePcAuthDto {
+export class CreatePositionDto {
 
     @ApiProperty()
     @IsNotEmpty()
-    ip:string;
+    name:string;
 
     @ApiProperty()
     @IsNotEmpty()
-    mac:string;
+    description:string;
 
     @ApiProperty()
     @IsNotEmpty()
-    edificeId:number;
+    requiredSkill:string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    unitedId:number;
 }

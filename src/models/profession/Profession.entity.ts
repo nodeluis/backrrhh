@@ -1,27 +1,26 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToMany} from 'typeorm';
 import { ContractEntity } from '../contract/Contract.entity';
-import { HourEntity } from '../hour/Hour.entity';
-import { HourHandInterface } from './HourHand.interface';
+import { ProfessionInterface } from './Profession.interface';
 
 @Entity()
-export class HourHandEntity implements HourHandInterface{
+export class ProfessionEntity implements ProfessionInterface{
 
     @PrimaryGeneratedColumn()
     id:number;
 
     @Column()
-    name: string;
+    name:string;
 
     @Column()
-    type: string;
+    grade:number;
+
+    @Column()
+    abbreviation:string;
 
     @Column()
     enabled:boolean;
 
-    @OneToMany(() => HourEntity, h => h.hourHand)
-    hour: HourEntity[];
-
-    @OneToMany(() => ContractEntity, c => c.hourHand)
+    @OneToMany(() => ContractEntity, c => c.profession)
     contracts: ContractEntity[];
 
     @CreateDateColumn({
@@ -35,5 +34,4 @@ export class HourHandEntity implements HourHandInterface{
     async beforeInsertActions() {
         this.enabled = true;
     }
-
 }

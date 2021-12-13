@@ -16,7 +16,15 @@ export enum AppResource {
   HOUR_HAND= 'HOUR_HAND',
   HOUR= 'HOUR',
   REASON= 'REASON',
-  TICKEO= 'TICKEO'
+  TICKEO= 'TICKEO',
+  REGULARIZATION= 'REGULARIZATION',
+  PROFESSION= 'PROFESSION',
+  PROJECT= 'PROJECT',
+  STUDY= 'STUDY',
+  AFILIATION= 'AFILIATION',
+  TYPEEMPLOYEE= 'TYPEEMPLOYEE',
+  UNITED= 'UNITED',
+  POSITION= 'POSITION'
 }
 
 export const roles: RolesBuilder = new RolesBuilder();
@@ -33,7 +41,7 @@ roles
   .grant(AppRoles.ADMIN)
   //.extend(AppRoles.AUTHOR)  con esto hereda todo lo q puede hacer el de arruba
   //any quiere decir cualquier ruta segun la logica, solo el admin puede crear su propio articulo
-  .createAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO])
-  .updateAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO])
-  .deleteAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO])
-  .readAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO]);
+  .createAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO,AppResource.REGULARIZATION,AppResource.PROFESSION,AppResource.PROJECT,AppResource.STUDY,AppResource.AFILIATION,AppResource.TYPEEMPLOYEE,AppResource.UNITED,AppResource.POSITION])
+  .updateAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO,AppResource.REGULARIZATION,AppResource.PROFESSION,AppResource.PROJECT,AppResource.STUDY,AppResource.AFILIATION,AppResource.TYPEEMPLOYEE,AppResource.UNITED,AppResource.POSITION])
+  .deleteAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO,AppResource.REGULARIZATION,AppResource.PROFESSION,AppResource.PROJECT,AppResource.STUDY,AppResource.AFILIATION,AppResource.TYPEEMPLOYEE,AppResource.UNITED,AppResource.POSITION])
+  .readAny([AppResource.USER,AppResource.EMPLOYEE,AppResource.EDIFICE,AppResource.PCAUTH,AppResource.FINGER,AppResource.HOUR_HAND,AppResource.HOUR,AppResource.REASON,AppResource.TICKEO,AppResource.REGULARIZATION,AppResource.PROFESSION,AppResource.PROJECT,AppResource.STUDY,AppResource.AFILIATION,AppResource.TYPEEMPLOYEE,AppResource.UNITED,AppResource.POSITION]);

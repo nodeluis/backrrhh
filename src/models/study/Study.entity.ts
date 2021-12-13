@@ -1,27 +1,20 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert, OneToMany} from 'typeorm';
 import { ContractEntity } from '../contract/Contract.entity';
-import { HourEntity } from '../hour/Hour.entity';
-import { HourHandInterface } from './HourHand.interface';
+import { StudyInterface } from './Study.interface';
 
 @Entity()
-export class HourHandEntity implements HourHandInterface{
+export class StudyEntity implements StudyInterface{
 
     @PrimaryGeneratedColumn()
     id:number;
 
     @Column()
-    name: string;
-
-    @Column()
-    type: string;
+    name:string;
 
     @Column()
     enabled:boolean;
 
-    @OneToMany(() => HourEntity, h => h.hourHand)
-    hour: HourEntity[];
-
-    @OneToMany(() => ContractEntity, c => c.hourHand)
+    @OneToMany(() => ContractEntity, c => c.study)
     contracts: ContractEntity[];
 
     @CreateDateColumn({

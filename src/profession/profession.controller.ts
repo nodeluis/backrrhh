@@ -1,31 +1,29 @@
 import { Body, Controller, Get, HttpException, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InjectRolesBuilder, RolesBuilder } from 'nest-access-control';
 import { AppResource } from 'src/app.roles';
 import { Auth } from 'src/common/decorators/auth.decorator';
 import { PaginationQuery } from 'src/common/dtos/pagination.dto';
-import { CreatePcAuthDto } from './dtos/create-pc-auth.dto';
-import { EditPcAuthDto } from './dtos/update-pc-auth.dto';
-import { PcauthService } from './pcauth.service';
+import { CreateProfessionDto } from './dtos/create-profession.dto';
+import { EditProfessionDto } from './dtos/edit-profession.dto';
+import { ProfessionService } from './profession.service';
 
-@ApiTags('Pc Auth routes')
-@Controller('pcauth')
-export class PcauthController {
+@ApiTags('Profession routes')
+@Controller('profession')
+export class ProfessionController {
+
     constructor(
-        private pcService:PcauthService,
-        @InjectRolesBuilder()
-        private readonly rolesBuilder: RolesBuilder,
+        private professionService:ProfessionService,
     ){}
 
     @Auth({
         possession: 'own',
         action: 'read',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.PROFESSION,
     })
     @Get()
     async findPcAuths(@Query() paginationQuery: PaginationQuery) {
         try { 
-            const data=await this.pcService.getPcAuths(paginationQuery);
+            const data=await this.professionService.getProfessions(paginationQuery);
             return { data }
         } catch (error) {
             return new HttpException(error, 409);
@@ -35,12 +33,12 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'read',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.PROFESSION,
     })
     @Get(':id')
     async findPcAuth(@Param('id') id: number) {
         try {
-            const data = await this.pcService.getPcAuth(id);
+            const data = await this.professionService.getProfession(id);
             return { data };
         } catch (error) {
             return error;
@@ -50,13 +48,13 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'create',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.EDIFICE,
     })
     @Post()
-    async createPcAuth(@Body() dto: CreatePcAuthDto){
+    async createPcAuth(@Body() dto: CreateProfessionDto){
         try {
-            const data=await this.pcService.createPcAuth(dto);
-            return { message:'Pc autorizada creada', data };
+            const data=await this.professionService.createProfession(dto);
+            return { message:'Profesión creada', data };
         } catch (error) {
             return error;
         }
@@ -66,16 +64,16 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'update',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.EDIFICE,
     })
     @Put(':id')
     async editPcAuth(
         @Param('id') id: number,
-        @Body() dto: EditPcAuthDto,
+        @Body() dto: EditProfessionDto,
     ) {
         try { 
-            const data = await this.pcService.editPcAuth(id, dto);
-            return { message:'Pc actualizada', data };
+            const data = await this.professionService.editProfession(id, dto);
+            return { message:'Profesión actualizada', data };
         } catch (error) {
             return error;
         }

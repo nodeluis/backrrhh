@@ -1,31 +1,28 @@
 import { Body, Controller, Get, HttpException, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InjectRolesBuilder, RolesBuilder } from 'nest-access-control';
 import { AppResource } from 'src/app.roles';
 import { Auth } from 'src/common/decorators/auth.decorator';
 import { PaginationQuery } from 'src/common/dtos/pagination.dto';
-import { CreatePcAuthDto } from './dtos/create-pc-auth.dto';
-import { EditPcAuthDto } from './dtos/update-pc-auth.dto';
-import { PcauthService } from './pcauth.service';
+import { CreatePositionDto } from './dtos/create-position.dto';
+import { EditPositionDto } from './dtos/edit-position.dto';
+import { PositionService } from './position.service';
 
-@ApiTags('Pc Auth routes')
-@Controller('pcauth')
-export class PcauthController {
+@ApiTags('Position/Charge routes')
+@Controller('position')
+export class PositionController {
     constructor(
-        private pcService:PcauthService,
-        @InjectRolesBuilder()
-        private readonly rolesBuilder: RolesBuilder,
+        private positionService:PositionService,
     ){}
 
     @Auth({
         possession: 'own',
         action: 'read',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.POSITION,
     })
     @Get()
-    async findPcAuths(@Query() paginationQuery: PaginationQuery) {
+    async findPositions(@Query() paginationQuery: PaginationQuery) {
         try { 
-            const data=await this.pcService.getPcAuths(paginationQuery);
+            const data=await this.positionService.getPositions(paginationQuery);
             return { data }
         } catch (error) {
             return new HttpException(error, 409);
@@ -35,12 +32,12 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'read',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.POSITION,
     })
     @Get(':id')
-    async findPcAuth(@Param('id') id: number) {
+    async findPositionh(@Param('id') id: number) {
         try {
-            const data = await this.pcService.getPcAuth(id);
+            const data = await this.positionService.getPosition(id);
             return { data };
         } catch (error) {
             return error;
@@ -50,13 +47,13 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'create',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.POSITION,
     })
     @Post()
-    async createPcAuth(@Body() dto: CreatePcAuthDto){
+    async createPosition(@Body() dto: CreatePositionDto){
         try {
-            const data=await this.pcService.createPcAuth(dto);
-            return { message:'Pc autorizada creada', data };
+            const data=await this.positionService.createPosition(dto);
+            return { message:'Cargo creado', data };
         } catch (error) {
             return error;
         }
@@ -66,15 +63,16 @@ export class PcauthController {
     @Auth({
         possession: 'own',
         action: 'update',
-        resource: AppResource.PCAUTH,
+        resource: AppResource.POSITION,
     })
     @Put(':id')
-    async editPcAuth(
+    async editPosition(
         @Param('id') id: number,
-        @Body() dto: EditPcAuthDto,
+        @Body() dto: EditPositionDto,
     ) {
-        try { 
-            const data = await this.pcService.editPcAuth(id, dto);
+        try {
+            const {unitedId, ...rest}= dto;
+            const data = await this.positionService.editPosition(id, rest);
             return { message:'Pc actualizada', data };
         } catch (error) {
             return error;

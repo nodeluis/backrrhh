@@ -1,4 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany} from 'typeorm';
+import { ContractEntity } from '../contract/Contract.entity';
 import { TickeoEntity } from '../tickeo/Tickeo.entity';
 import { EmployeeInterface } from './Employee.interface';
 
@@ -68,6 +69,9 @@ export class EmployeeEntity implements EmployeeInterface{
 
     @OneToMany(() => TickeoEntity, tick => tick.employee)
     tickeo: TickeoEntity[];
+
+    @OneToMany(() => ContractEntity, c => c.employee)
+    contracts: ContractEntity[];
 
     @CreateDateColumn({
         name: 'created_at',
